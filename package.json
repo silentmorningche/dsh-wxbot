@@ -5,6 +5,14 @@
   "type": "module",
   "description": "WeChat ClawBot (iLink Bot) channel plugin for DeepSeek Harness: QR login, long-poll inbound messages, drive a DSH session, reply to WeChat.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/silentmorningche/dsh-wxbot.git"
+  },
+  "homepage": "https://github.com/silentmorningche/dsh-wxbot#readme",
+  "bugs": {
+    "url": "https://github.com/silentmorningche/dsh-wxbot/issues"
+  },
   "main": "src/index.js",
   "exports": {
     ".": "./src/index.js",
