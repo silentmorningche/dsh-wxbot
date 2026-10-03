@@ -1,0 +1,29 @@
+{
+  "name": "dsh-wxbot",
+  "version": "1.0.0",
+  "author": "silentmorningche",
+  "type": "module",
+  "description": "WeChat ClawBot (iLink Bot) channel plugin for DeepSeek Harness: QR login, long-poll inbound messages, drive a DSH session, reply to WeChat.",
+  "license": "MIT",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./src/*": "./src/*",
+    "./package.json": "./package.json",
+    "./cordis.patch.yml": "./cordis.patch.yml"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "files": [
+    "src",
+    "docs",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}

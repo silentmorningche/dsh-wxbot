@@ -1,0 +1,63 @@
+# Bundle patch for dsh-wxbot.
+#
+# A bundle's patch layer is applied over the empty profile root, so this file is one
+# `insert` list. The shape is verified against:
+#   - @deepseek-ai/dsh-base/package.json -> "dsh": { "bundle": { "patch": "./cordis.patch.yml" } }
+#   - the official tutorial (docs/user/develop/basic/publish.zh.md), which shows
+#         - insert:
+#             - id: hello
+#               name: dsh-hello-plugin
+#     i.e. the row names the package, NOT a relative path.
+#
+# ⚠️ A different insert form — naming an absolute path to a module that lives OUTSIDE the
+# profile — was tested on a live profile and is **not usable for this plugin**. The module
+# does load, but bare host specifiers such as `@deepseek-ai/dsh-llm` do not resolve for an
+# importer outside the profile tree, so the plugin cannot inject messages. See
+# docs/LOAD-TEST-FINDINGS.md. Install through the Web Plugins page (or `dsh plugin add`) so
+# pnpm links the package inside the profile.
+#
+# Config keys are validated in code, not by a schema. src/index.js deliberately exports no
+# `Config` (a Standard Schema would need an eager host import that can silently kill the
+# plugin). An unknown key here produces a warning, and a bad value falls back to its default,
+# rather than failing plugin load. See `configDefaults` in src/index.js.
+#
+# NOTE: an empty or comments-only patch file FAILS boot. Disable a layer with `[]`, never by
+# leaving it blank. Source: @deepseek-ai/dsh-app-boot README.
+
+- insert:
+    - id: weixin-clawbot
+      name: dsh-wxbot
+      config:
+        # base_info.bot_agent. Observability only: never authentication, never routing.
+        # ASCII, one or more space-separated `Name/Version` tokens, optional ` (comment)`,
+        # <= 256 bytes after sanitisation.
+        botAgent: dsh-wxbot/1.0.0
+
+        # iLink API base. The QR request always goes to the fixed host regardless.
+        apiBaseUrl: https://ilinkai.weixin.qq.com
+
+        # base_info.channel_version, taken from the plugin version the client mirrors.
+        channelVersion: "2.4.8"
+
+        # Directory holding the account token, the get_updates_buf cursor, the per-peer
+        # context tokens and the fetched QR image. Contains credentials: never commit it.
+        # Empty string means "beside this package" (dsh-wxbot/.state).
+        storageDir: ""
+
+        # Split replies longer than this into several messages. The protocol does not
+        # document a maximum length, so this is a defensive value, not a documented limit.
+        maxReplyChars: 2000
+
+        # Drive the WeChat "typing" indicator while the agent works.
+        typingIndicator: true
+
+        # How long to wait for one agent reply before giving up and reporting it.
+        replyTimeoutMs: 300000
+
+        # Serve the QR code and the numeric pairing-code form over HTTP. This is the only
+        # way a server-side plugin can collect a pairing code, since it has no terminal.
+        enableQrRoute: true
+        qrRoutePath: /wechat/qr
+
+        # Start the QR login automatically when no account is stored yet.
+        autoLogin: true
