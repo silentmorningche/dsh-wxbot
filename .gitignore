@@ -1,0 +1,18 @@
+# ── Credentials and state. Never commit this. ───────────────────────────────────────────────────
+#
+# `.state/` holds the WeChat bot token, the `get_updates_buf` cursor, the per-peer context tokens and
+# the fetched QR image. It also holds `_refs/`, which is reference material downloaded from *other*
+# projects (the iLink protocol docs and DSH's own READMEs and source excerpts) — republishing that
+# under this repository's name would be a licensing problem on top of a credential leak.
+#
+# Both live under this one path, so this single line covers both. Do not use `git add -f` here.
+.state/
+
+# ── Packaging output ────────────────────────────────────────────────────────────────────────────
+*.zip
+node_modules/
+
+# ── OS noise ────────────────────────────────────────────────────────────────────────────────────
+Thumbs.db
+desktop.ini
+.DS_Store
